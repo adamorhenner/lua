@@ -172,7 +172,6 @@ function love.update ()
         end
         moveMeteoros()
         moveTiro()
-        checaColisoes()
     end
 end
 
