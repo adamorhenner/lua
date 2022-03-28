@@ -87,16 +87,24 @@ end
 
 function move14bis ()
     if love.keyboard.isDown('w') then
-        aviao_14bis.y = aviao_14bis.y - 5
+        if aviao_14bis.y > ( -60 + aviao_14bis.imagem:getHeight() / 2) then
+            aviao_14bis.y = aviao_14bis.y - 5
+        end
     end
     if love.keyboard.isDown('s') then
-        aviao_14bis.y = aviao_14bis.y + 5
+        if aviao_14bis.y < (ALTURA_TELA - aviao_14bis.imagem:getHeight() / 2) then
+            aviao_14bis.y = aviao_14bis.y + 5
+        end
     end
     if love.keyboard.isDown('a') then
-        aviao_14bis.x = aviao_14bis.x - 5
+        if aviao_14bis.x > ( -60 + aviao_14bis.imagem:getWidth() / 2) then
+            aviao_14bis.x = aviao_14bis.x - 5
+        end
     end
     if love.keyboard.isDown('d') then
-        aviao_14bis.x = aviao_14bis.x + 5
+        if aviao_14bis.x < (LARGURA_TELA - aviao_14bis.imagem:getWidth() / 2) then
+            aviao_14bis.x = aviao_14bis.x + 5
+        end
     end
 end
 
@@ -187,7 +195,7 @@ function love.update ()
         end
         moveMeteoros()
         moveTiro()
-        --checaColisoes()*/
+        --checaColisoes()
         checaObjetivoConcluido()
     end
 end
