@@ -161,7 +161,19 @@ function love.load()
 
     math.randomseed(os.time())
 
-    backgroud = love.graphics.newImage("imagens/background.png")
+    --Background
+    backgroud = love.graphics.newImage("imagens/Background2.png")
+    backgroudDois = love.graphics.newImage("imagens/Background2.png")
+
+    planoDeFundo = {
+        x =0,
+        y =0,
+        y2 = 0 - backgroud:getHeight(),
+        vel = 5
+    }
+
+    --Background
+
     gameover_img = love.graphics.newImage("imagens/gameover.png")
     vencedor_img = love.graphics.newImage("imagens/vencedor.png")
 
@@ -197,6 +209,7 @@ function love.update ()
         moveTiro()
         --checaColisoes()
         checaObjetivoConcluido()
+        planoDeFundoScrolliing()
     end
 end
 
@@ -213,7 +226,11 @@ end
 
 -- Draw a coloured rectangle.
 function love.draw()
-    love.graphics.draw(backgroud, 0,0)
+    -- background
+    love.graphics.draw(backgroud, planoDeFundo.x, planoDeFundo.y)
+    love.graphics.draw(backgroudDois, planoDeFundo.x, planoDeFundo.y2)
+    -- background
+    
     love.graphics.draw(aviao_14bis.imagem, aviao_14bis.x, aviao_14bis.y)
 
     love.graphics.print("Meteoros restantes "..NUMERO_METEOROS_OBJETIVO-METEOROS_ATINGIDOS, 0,0)
@@ -235,4 +252,18 @@ function love.draw()
         love.graphics.draw(vencedor_img, LARGURA_TELA/2 - vencedor_img:getWidth()/2, ALTURA_TELA/2 - vencedor_img:getHeight()/2)
     end
 
+end
+
+
+function planoDeFundoScrolliing()
+    planoDeFundo.y = planoDeFundo.y + planoDeFundo.vel
+    planoDeFundo.y2 = planoDeFundo.y2 + planoDeFundo.vel
+
+    if planoDeFundo.y > ALTURA_TELA then
+        planoDeFundo.y = planoDeFundo.y2 - backgroudDois:getHeight()
+    end
+    if planoDeFundo.y2 > ALTURA_TELA then
+        planoDeFundo.y2 = planoDeFundo.y - backgroud:getHeight()
+    end
+    
 end
