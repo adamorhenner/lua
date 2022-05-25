@@ -7,7 +7,7 @@ NUMERO_METEOROS_OBJETIVO = 100
 
 
 aviao_14bis = {
-    src = "imagens/14bis.png",
+    src = "imagens/nave2.png",
     largura = 55,
     altura = 63,
     x = LARGURA_TELA/2 -64/2,
@@ -49,7 +49,7 @@ function destroiAviao()
 end
 
 function reconstroiAviao()
-    aviao_14bis.src = "imagens/14bis.png"
+    aviao_14bis.src = "imagens/nave2.png"
     aviao_14bis.imagem = love.graphics.newImage(aviao_14bis.src)
     aviao_14bis.largura = 55
     aviao_14bis.altura = 63
@@ -169,8 +169,8 @@ function love.load()
     math.randomseed(os.time())
 
     --Background
-    backgroud = love.graphics.newImage("imagens/Background2.png")
-    backgroudDois = love.graphics.newImage("imagens/Background2.png")
+    backgroud = love.graphics.newImage("imagens/fundo.png")
+    backgroudDois = love.graphics.newImage("imagens/fundo.png")
 
     planoDeFundo = {
         x =0,
@@ -190,7 +190,7 @@ function love.load()
     --imagens
 
     -- sons
-    musica_ambiente = love.audio.newSource("audios/ambiente.wav", "static")
+    musica_ambiente = love.audio.newSource("audios/Space.mp3", "static")
     musica_ambiente:setLooping(true)
     musica_ambiente:play()
 
@@ -290,7 +290,7 @@ function love.draw()
 
     else
         love.graphics.draw(gameover_img, LARGURA_TELA/2 - gameover_img:getWidth()/2, ALTURA_TELA/2 - gameover_img:getHeight()/2)
-        love.graphics.draw(telaTitulo, inOutx, inOuty)
+        --love.graphics.draw(telaTitulo, inOutx, inOuty)
         --love.graphics.print("Aperte 'r' para reiniciar.", LARGURA_TELA/3 - 20, ALTURA_TELA/2 +55)
     end
     -- Game over e resetww
