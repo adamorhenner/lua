@@ -1,12 +1,14 @@
-
 LARGURA_TELA = 320
 ALTURA_TELA = 480
 MAX_METEOROS = 12
 METEOROS_ATINGIDOS = 0
-NUMERO_METEOROS_OBJETIVO = 100
+NUMERO_METEOROS_OBJETIVO = 20
 tela_game_over = false
+velocidade_tiro = 3
+parametro_aumento = 25
+contador = 3
 
-aviao_14bis = {
+nave = {
     src = "imagens/nave2.png",
     largura = 55,
     altura = 63,
@@ -19,40 +21,38 @@ function daTiro()
     disparo:play()
 
     local tiro = {
-        x =aviao_14bis.x + aviao_14bis.largura/2,
-        y = aviao_14bis.y,
+        x =nave.x + nave.largura/2,
+        y = nave.y,
         largura = 16,
         altura = 16
     }
-    table.insert(aviao_14bis.tiros, tiro)
+    table.insert(nave.tiros, tiro)
 end
 
 function moveTiro()
-    for i= #aviao_14bis.tiros,1,-1 do
-        if aviao_14bis.tiros[i].y > 0 then
-            aviao_14bis.tiros[i].y = aviao_14bis.tiros[i].y - 7
+    for i= #nave.tiros,1,-1 do
+        if nave.tiros[i].y > 0 then
+            nave.tiros[i].y = nave.tiros[i].y - velocidade_tiro
         else
-            table.remove(aviao_14bis.tiros, i)
+            table.remove(nave.tiros, i)
         end
     end
 end
 
-
-
 function destroiAviao()
     destruicao:play()
 
-    aviao_14bis.src = "imagens/explosao_nave.png"
-    aviao_14bis.imagem = love.graphics.newImage(aviao_14bis.src)
-    aviao_14bis.largura = 67
-    aviao_14bis.altura = 77
+    nave.src = "imagens/explosao_nave.png"
+    nave.imagem = love.graphics.newImage(nave.src)
+    nave.largura = 67
+    nave.altura = 77
 end
 
 function reconstroiAviao()
-    aviao_14bis.src = "imagens/nave2.png"
-    aviao_14bis.imagem = love.graphics.newImage(aviao_14bis.src)
-    aviao_14bis.largura = 55
-    aviao_14bis.altura = 63
+    nave.src = "imagens/nave2.png"
+    nave.imagem = love.graphics.newImage(nave.src)
+    nave.largura = 55
+    nave.altura = 63
 end
 
 function temColisao(X1, Y1, L1, A1, X2, Y2, L2, A2)
@@ -92,25 +92,25 @@ function moveMeteoros()
     end
 end
 
-function move14bis ()
+function moveNave ()
     if love.keyboard.isDown('w') then
-        if aviao_14bis.y > ( -60 + aviao_14bis.imagem:getHeight() / 2) then
-            aviao_14bis.y = aviao_14bis.y - 5
+        if nave.y > ( -60 + nave.imagem:getHeight() / 2) then
+            nave.y = nave.y - 5
         end
     end
     if love.keyboard.isDown('s') then
-        if aviao_14bis.y < (ALTURA_TELA - aviao_14bis.imagem:getHeight() / 2) then
-            aviao_14bis.y = aviao_14bis.y + 5
+        if nave.y < (ALTURA_TELA - nave.imagem:getHeight() / 2) then
+            nave.y = nave.y + 5
         end
     end
     if love.keyboard.isDown('a') then
-        if aviao_14bis.x > ( -60 + aviao_14bis.imagem:getWidth() / 2) then
-            aviao_14bis.x = aviao_14bis.x - 5
+        if nave.x > ( -60 + nave.imagem:getWidth() / 2) then
+            nave.x = nave.x - 5
         end
     end
     if love.keyboard.isDown('d') then
-        if aviao_14bis.x < (LARGURA_TELA - aviao_14bis.imagem:getWidth() / 2) then
-            aviao_14bis.x = aviao_14bis.x + 5
+        if nave.x < (LARGURA_TELA - nave.imagem:getWidth() / 2) then
+            nave.x = nave.x + 5
         end
     end
 end
@@ -121,10 +121,10 @@ function trocaMusicaDeFundo()
 
 end
 
-function checaColisaoComAviao()
+function checaColisaoComNave()
     for k, meteoro in pairs(meteoros) do
         if temColisao(meteoro.x, meteoro.y, meteoro.largura, meteoro.altura, 
-                    aviao_14bis.x, aviao_14bis.y, aviao_14bis.largura, aviao_14bis.altura) then
+        nave.x, nave.y, nave.largura, nave.altura) then
             trocaMusicaDeFundo()
             destroiAviao()
             --FIM_JOGO = true
@@ -136,13 +136,13 @@ function checaColisaoComAviao()
 end
 
 function checaColisaoComTiros()
-    for i = #aviao_14bis.tiros, 1, -1 do
+    for i = #nave.tiros, 1, -1 do
         for j = #meteoros, 1, -1 do
-            if temColisao(aviao_14bis.tiros[i].x, aviao_14bis.tiros[i].y,aviao_14bis.tiros[i].largura, aviao_14bis.tiros[i].altura,
+            if temColisao(nave.tiros[i].x, nave.tiros[i].y,nave.tiros[i].largura, nave.tiros[i].altura,
                         meteoros[j].x, meteoros[j].y, meteoros[j].largura, meteoros[j].altura) then
                  
                 METEOROS_ATINGIDOS = METEOROS_ATINGIDOS + 1
-                table.remove(aviao_14bis.tiros, i)
+                table.remove(nave.tiros, i)
                 table.remove(meteoros,j)
                 break
             end
@@ -151,16 +151,19 @@ function checaColisaoComTiros()
 end
 
 function checaColisoes()
-    checaColisaoComAviao()
+    checaColisaoComNave()
     checaColisaoComTiros()
 end
 
 function checaObjetivoConcluido()
+
     if METEOROS_ATINGIDOS >= NUMERO_METEOROS_OBJETIVO then
-        musica_ambiente:stop()
-        love.graphics.print("oi", 0,0)
-        VENCEDOR = true
-        vencedor_som:play() 
+        NUMERO_METEOROS_OBJETIVO = NUMERO_METEOROS_OBJETIVO + 20
+        MAX_METEOROS = MAX_METEOROS + 1
+        parametro_aumento = parametro_aumento + 10
+    end
+    if MAX_METEOROS > parametro_aumento then
+        velocidade_tiro = contador + 1
     end
 end
 
@@ -186,7 +189,7 @@ function love.load()
     gameover_img = love.graphics.newImage("imagens/gameover2.png")
     vencedor_img = love.graphics.newImage("imagens/vencedor2.png")
 
-    aviao_14bis.imagem = love.graphics.newImage(aviao_14bis.src)
+    nave.imagem = love.graphics.newImage(nave.src)
     meteoro_img = love.graphics.newImage("imagens/meteoro.png")
     tiro_img = love.graphics.newImage("imagens/tiro2.png")
     --imagens
@@ -213,42 +216,24 @@ function love.load()
 
 end
 
--- Increase the size of the rectangle every frame.
 function love.update ()
-    ---fimdejofgo
-    --if estaVivo and not VENCEDOR and not love.keyboard.isDown('r') then
-        if love.keyboard.isDown('w','a','s','d') then
-            move14bis()
-        end
-
-
-        removeMeteoros()
-        if #meteoros < MAX_METEOROS then
-            criaMeteoro()
-        end
-        moveMeteoros()
-        moveTiro()
-        checaColisoes()
-        --checaObjetivoConcluido()
-        planoDeFundoScrolliing()
-        iniciaJogo()
-        reset()
-        
-
-        --if not estaVivo and love.keyboard.isDown('r') then
-            --aviao_14bis.tiros = {}
-            
-
-            --aviao_14bis.x = LARGURA_TELA/2
-            --aviao_14bis.y = ALTURA_TELA/2
-
-            --METEOROS_ATINGIDOS = 0
-
-            --estaVivo = true
-            --FIM_JOGO = false
-        --end
+    if love.keyboard.isDown('w','a','s','d') then
+        moveNave()
     end
---end
+
+
+    removeMeteoros()
+    if #meteoros < MAX_METEOROS then
+        criaMeteoro()
+    end
+    moveMeteoros()
+    moveTiro()
+    checaColisoes()
+    checaObjetivoConcluido()
+    planoDeFundoScrolliing()
+    iniciaJogo()
+    reset()
+end
 
 function love.keypressed(tecla)
     if tecla == "escape" then
@@ -260,10 +245,6 @@ function love.keypressed(tecla)
     end
 end
 
-
-
-
--- Draw a coloured rectangle.
 function love.draw()
     -- background
     love.graphics.draw(backgroud, planoDeFundo.x, planoDeFundo.y)
@@ -278,7 +259,7 @@ function love.draw()
         love.graphics.draw(meteoro_img, meteoro.x, meteoro.y)
     end
 
-    for k, tiro in ipairs(aviao_14bis.tiros) do
+    for k, tiro in ipairs(nave.tiros) do
         love.graphics.draw(tiro_img, tiro.x, tiro.y)
     end
 
@@ -289,7 +270,7 @@ function love.draw()
 
     -- Game over e reset
     if estaVivo then
-        love.graphics.draw(aviao_14bis.imagem, aviao_14bis.x, aviao_14bis.y)
+        love.graphics.draw(nave.imagem, nave.x, nave.y)
 
     else
         love.graphics.draw(gameover_img, LARGURA_TELA/2 - gameover_img:getWidth()/2, ALTURA_TELA/2 - gameover_img:getHeight()/2)
@@ -301,6 +282,7 @@ function love.draw()
         meteoros ={}
         love.graphics.draw(gameover_img, LARGURA_TELA/2 - gameover_img:getWidth()/2, ALTURA_TELA/2 - gameover_img:getHeight()/2)
         love.graphics.print("Aperte 'p' para reiniciar.", LARGURA_TELA/3 - 50, ALTURA_TELA/2 +55 )
+        planoDeFundo.vel = 0
     end
     
     if love.keyboard.isDown('p') then
@@ -350,13 +332,11 @@ function reset()
         METEOROS_ATINGIDOS = 0
         musica_ambiente:play()
         meteoros = {}
-        aviao_14bis.x = LARGURA_TELA/2 -64/2
-        aviao_14bis.y = ALTURA_TELA - 64/2
-
+        nave.x = LARGURA_TELA/2 -64/2
+        nave.y = ALTURA_TELA - 64/2
+        planoDeFundo.vel = 5
+        parametro_aumento = 25
+        contador = 1
     end    
 end
 
-function gameOver()
-
-    
-end
