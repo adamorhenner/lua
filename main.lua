@@ -6,7 +6,7 @@ NUMERO_METEOROS_OBJETIVO = 20
 tela_game_over = false
 velocidade_tiro = 3
 parametro_aumento = 25
-contador = 3
+contador = 1
 
 nave = {
     src = "imagens/nave2.png",
@@ -163,7 +163,7 @@ function checaObjetivoConcluido()
         parametro_aumento = parametro_aumento + 10
     end
     if MAX_METEOROS > parametro_aumento then
-        velocidade_tiro = contador + 1
+        velocidade_tiro = velocidade_tiro + contador
     end
 end
 
