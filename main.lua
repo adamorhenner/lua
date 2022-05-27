@@ -4,7 +4,7 @@ ALTURA_TELA = 480
 MAX_METEOROS = 12
 METEOROS_ATINGIDOS = 0
 NUMERO_METEOROS_OBJETIVO = 100
-
+tela_game_over = false
 
 aviao_14bis = {
     src = "imagens/nave2.png",
@@ -128,8 +128,9 @@ function checaColisaoComAviao()
             trocaMusicaDeFundo()
             destroiAviao()
             --FIM_JOGO = true
-            estaVivo = false
-            abreTela = false
+            tela_game_over = true
+            --estaVivo = false
+            --abreTela = false
         end
     end
 end
@@ -157,6 +158,7 @@ end
 function checaObjetivoConcluido()
     if METEOROS_ATINGIDOS >= NUMERO_METEOROS_OBJETIVO then
         musica_ambiente:stop()
+        love.graphics.print("oi", 0,0)
         VENCEDOR = true
         vencedor_som:play() 
     end
@@ -164,7 +166,7 @@ end
 
 function love.load()
     love.window.setMode(LARGURA_TELA, ALTURA_TELA, {resizable = false})
-    love.window.setTitle("14bis VS Meteoro")
+    love.window.setTitle("Pei pei")
 
     math.randomseed(os.time())
 
@@ -204,7 +206,7 @@ function love.load()
 
     --Tela titulo
     abreTela = false
-    telaTitulo = love.graphics.newImage("imagens/background.png")
+    telaTitulo = love.graphics.newImage("imagens/backgroundMenu.png")
     inOutx = 0
     inOuty = 0
     --Tela titulo
@@ -227,10 +229,11 @@ function love.update ()
         moveMeteoros()
         moveTiro()
         checaColisoes()
-        checaObjetivoConcluido()
+        --checaObjetivoConcluido()
         planoDeFundoScrolliing()
         iniciaJogo()
         reset()
+        
 
         --if not estaVivo and love.keyboard.isDown('r') then
             --aviao_14bis.tiros = {}
@@ -268,7 +271,7 @@ function love.draw()
     -- background
     
 
-    love.graphics.print("Meteoros restantes "..NUMERO_METEOROS_OBJETIVO-METEOROS_ATINGIDOS, 0,0)
+    love.graphics.print("PONTUAÇÃO: "..METEOROS_ATINGIDOS, 0,0)
 
 
     for k,meteoro in pairs(meteoros) do
@@ -290,8 +293,20 @@ function love.draw()
 
     else
         love.graphics.draw(gameover_img, LARGURA_TELA/2 - gameover_img:getWidth()/2, ALTURA_TELA/2 - gameover_img:getHeight()/2)
-        --love.graphics.draw(telaTitulo, inOutx, inOuty)
-        --love.graphics.print("Aperte 'r' para reiniciar.", LARGURA_TELA/3 - 20, ALTURA_TELA/2 +55)
+        love.graphics.draw(telaTitulo, inOutx, inOuty)
+        love.graphics.setFont(love.graphics.newFont(18))
+    end
+
+    if tela_game_over then
+        meteoros ={}
+        love.graphics.draw(gameover_img, LARGURA_TELA/2 - gameover_img:getWidth()/2, ALTURA_TELA/2 - gameover_img:getHeight()/2)
+        love.graphics.print("Aperte 'p' para reiniciar.", LARGURA_TELA/3 - 50, ALTURA_TELA/2 +55 )
+    end
+    
+    if love.keyboard.isDown('p') then
+        estaVivo = false
+        abreTela = false
+        tela_game_over = false
     end
     -- Game over e resetww
 
@@ -332,6 +347,16 @@ function reset()
         abreTela = true
         estaVivo = true
         reconstroiAviao()
+        METEOROS_ATINGIDOS = 0
+        musica_ambiente:play()
+        meteoros = {}
+        aviao_14bis.x = LARGURA_TELA/2 -64/2
+        aviao_14bis.y = ALTURA_TELA - 64/2
 
     end    
+end
+
+function gameOver()
+
+    
 end
