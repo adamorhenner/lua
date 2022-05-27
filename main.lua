@@ -330,7 +330,7 @@ function reset()
         estaVivo = true
         reconstroiAviao()
         METEOROS_ATINGIDOS = 0
-        musica_ambiente:play()
+         musica_ambiente:play()
         meteoros = {}
         nave.x = LARGURA_TELA/2 -64/2
         nave.y = ALTURA_TELA - 64/2
