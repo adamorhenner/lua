@@ -5,7 +5,7 @@ METEOROS_ATINGIDOS = 0
 NUMERO_METEOROS_OBJETIVO = 20
 tela_game_over = false
 velocidade_tiro = 3
-parametro_aumento = 25
+parametro_aumento = 17
 contador = 1
 
 nave = {
@@ -70,7 +70,7 @@ function criaMeteoro()
             y = -70,
             largura = 50,
             altura = 44,
-            peso = math.random(3),
+            peso = math.random(4),
             deslocamento_horizontal = math.random(-1,1)
         }
         table.insert(meteoros, meteoro)
@@ -93,24 +93,26 @@ function moveMeteoros()
 end
 
 function moveNave ()
-    if love.keyboard.isDown('w') then
-        if nave.y > ( -60 + nave.imagem:getHeight() / 2) then
-            nave.y = nave.y - 5
+    if tela_game_over == false then
+        if love.keyboard.isDown('w') then
+            if nave.y > ( -60 + nave.imagem:getHeight() / 2) then
+                nave.y = nave.y - 5
+            end
         end
-    end
-    if love.keyboard.isDown('s') then
-        if nave.y < (ALTURA_TELA - nave.imagem:getHeight() / 2) then
-            nave.y = nave.y + 5
+        if love.keyboard.isDown('s') then
+            if nave.y < (ALTURA_TELA - nave.imagem:getHeight() / 2) then
+                nave.y = nave.y + 5
+            end
         end
-    end
-    if love.keyboard.isDown('a') then
-        if nave.x > ( -60 + nave.imagem:getWidth() / 2) then
-            nave.x = nave.x - 5
+        if love.keyboard.isDown('a') then
+            if nave.x > ( -60 + nave.imagem:getWidth() / 2) then
+                nave.x = nave.x - 5
+            end
         end
-    end
-    if love.keyboard.isDown('d') then
-        if nave.x < (LARGURA_TELA - nave.imagem:getWidth() / 2) then
-            nave.x = nave.x + 5
+        if love.keyboard.isDown('d') then
+            if nave.x < (LARGURA_TELA - nave.imagem:getWidth() / 2) then
+                nave.x = nave.x + 5
+            end
         end
     end
 end
@@ -158,12 +160,13 @@ end
 function checaObjetivoConcluido()
 
     if METEOROS_ATINGIDOS >= NUMERO_METEOROS_OBJETIVO then
-        NUMERO_METEOROS_OBJETIVO = NUMERO_METEOROS_OBJETIVO + 20
+        NUMERO_METEOROS_OBJETIVO = NUMERO_METEOROS_OBJETIVO + 50
         MAX_METEOROS = MAX_METEOROS + 1
-        parametro_aumento = parametro_aumento + 10
     end
-    if MAX_METEOROS > parametro_aumento then
+
+    if MAX_METEOROS == parametro_aumento then
         velocidade_tiro = velocidade_tiro + contador
+        parametro_aumento = parametro_aumento + 5
     end
 end
 
@@ -236,11 +239,13 @@ function love.update ()
 end
 
 function love.keypressed(tecla)
-    if tecla == "escape" then
-        love.event.quit()
-    elseif tecla == "space" then
-        if estaVivo then
-            daTiro()
+    if tela_game_over == false then
+        if tecla == "escape" then
+            love.event.quit()
+        elseif tecla == "space" then
+            if estaVivo then
+                daTiro()
+            end
         end
     end
 end
@@ -283,6 +288,7 @@ function love.draw()
         love.graphics.draw(gameover_img, LARGURA_TELA/2 - gameover_img:getWidth()/2, ALTURA_TELA/2 - gameover_img:getHeight()/2)
         love.graphics.print("Aperte 'p' para reiniciar.", LARGURA_TELA/3 - 50, ALTURA_TELA/2 +55 )
         planoDeFundo.vel = 0
+
     end
     
     if love.keyboard.isDown('p') then
@@ -328,15 +334,18 @@ function reset()
     if not estaVivo and love.keyboard.isDown('r') then
         abreTela = true
         estaVivo = true
-        reconstroiAviao()
         METEOROS_ATINGIDOS = 0
-         musica_ambiente:play()
+        musica_ambiente:play()
         meteoros = {}
         nave.x = LARGURA_TELA/2 -64/2
         nave.y = ALTURA_TELA - 64/2
         planoDeFundo.vel = 5
-        parametro_aumento = 25
+        parametro_aumento = 17
         contador = 1
+        MAX_METEOROS = 12
+        velocidade_tiro = 3
+        reconstroiAviao()
+
     end    
 end
 
