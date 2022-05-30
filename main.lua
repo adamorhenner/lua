@@ -1,10 +1,10 @@
 LARGURA_TELA = 320
 ALTURA_TELA = 480
-MAX_METEOROS = 12
+MAX_METEOROS = 3
 METEOROS_ATINGIDOS = 0
-NUMERO_METEOROS_OBJETIVO = 20
+NUMERO_METEOROS_OBJETIVO = 15
 tela_game_over = false
-velocidade_tiro = 3
+velocidade_tiro = 2
 parametro_aumento = 17
 contador = 1
 
@@ -160,7 +160,7 @@ end
 function checaObjetivoConcluido()
 
     if METEOROS_ATINGIDOS >= NUMERO_METEOROS_OBJETIVO then
-        NUMERO_METEOROS_OBJETIVO = NUMERO_METEOROS_OBJETIVO + 50
+        NUMERO_METEOROS_OBJETIVO = NUMERO_METEOROS_OBJETIVO + 15
         MAX_METEOROS = MAX_METEOROS + 1
     end
 
@@ -335,6 +335,7 @@ function reset()
         abreTela = true
         estaVivo = true
         METEOROS_ATINGIDOS = 0
+        NUMERO_METEOROS_OBJETIVO = 15
         musica_ambiente:play()
         meteoros = {}
         nave.x = LARGURA_TELA/2 -64/2
@@ -342,8 +343,8 @@ function reset()
         planoDeFundo.vel = 5
         parametro_aumento = 17
         contador = 1
-        MAX_METEOROS = 12
-        velocidade_tiro = 3
+        MAX_METEOROS = 3
+        velocidade_tiro = 2
         reconstroiAviao()
 
     end    
