@@ -1,10 +1,10 @@
 LARGURA_TELA = 320
 ALTURA_TELA = 480
-MAX_METEOROS = 3
+MAX_METEOROS = 10
 METEOROS_ATINGIDOS = 0
 NUMERO_METEOROS_OBJETIVO = 15
 tela_game_over = false
-velocidade_tiro = 2
+velocidade_tiro = 3
 parametro_aumento = 17
 contador = 1
 
@@ -343,8 +343,8 @@ function reset()
         planoDeFundo.vel = 5
         parametro_aumento = 17
         contador = 1
-        MAX_METEOROS = 3
-        velocidade_tiro = 2
+        MAX_METEOROS = 10
+        velocidade_tiro = 3
         reconstroiAviao()
 
     end    
