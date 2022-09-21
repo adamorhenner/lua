@@ -1,5 +1,5 @@
 # Pei-Pei
-![banner logo](https://user-images.githubusercontent.com/53570263/171178636-20e1a26a-8b16-4d6a-ad6b-3ab2ffa2d1d1.png)
+![banner logo](https://user-images.githubusercontent.com/53570263/171178636-20e1a26a-8b16-4d6a-ad6b-3ab2ffa2d1d1.png#vitrinedev)
 
 Este é o jogo desenvolvido em Lua e love2d para cadeira de Estagio I do curso de Sistemas de Informação da Universidade 7 de setembro.
 
@@ -20,3 +20,4 @@ Confira imagens do jogo:
 ## Video
 Aqui um video mais detalhado e uma gameplay do jogo:
 [![Video](https://user-images.githubusercontent.com/53570263/171181761-82ab3a8e-c11f-46b5-823f-c83882531f47.jpg)](https://www.youtube.com/watch?v=X-WR1vVC4iI)
+
